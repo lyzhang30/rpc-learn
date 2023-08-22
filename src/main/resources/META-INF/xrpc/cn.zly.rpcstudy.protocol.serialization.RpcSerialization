@@ -1,1 +1,2 @@
 json=cn.zly.rpcstudy.protocol.serialization.JsonSerialization
+hessian=cn.zly.rpcstudy.protocol.serialization.HessianSerialization

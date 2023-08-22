@@ -1,1 +1,2 @@
 redis=cn.zly.rpcstudy.register.RedisRegister
+zookeeper=cn.zly.rpcstudy.register.ZookeeperRegister
