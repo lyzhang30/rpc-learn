@@ -10,9 +10,9 @@ import java.util.List;
  */
 public interface IRegisterService {
 
-    void register(ServiceMeta serviceMeta);
+    void register(ServiceMeta serviceMeta) throws Exception;
 
-    void unregister(ServiceMeta serviceMeta);
+    void unregister(ServiceMeta serviceMeta) throws Exception;
 
     List<ServiceMeta> discoveries(String serviceName);
 

@@ -5,6 +5,7 @@ import cn.zly.rpcstudy.common.ServiceMeta;
 import cn.zly.rpcstudy.config.RpcProperties;
 import cn.zly.rpcstudy.utils.LocalDateTimeUtils;
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
 import org.springframework.util.ObjectUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -94,9 +95,7 @@ public class RedisRegister implements IRegisterService {
     @Override
     public void register(ServiceMeta serviceMeta) {
         String key = RpcServiceNameBuilder.buildServiceKey(serviceMeta.getServiceName(), serviceMeta.getServiceVersion());
-        if (!serviceSet.contains(key)) {
-            serviceSet.add(key);
-        }
+        serviceSet.add(key);
 
         serviceMeta.setUUID(this.UUID);
         serviceMeta.setEndTime(LocalDateTimeUtils.getEpochMilli() + TTL);
@@ -112,7 +111,13 @@ public class RedisRegister implements IRegisterService {
 
     @Override
     public void unregister(ServiceMeta serviceMeta) {
-
+        String key = RpcServiceNameBuilder.buildServiceKey(serviceMeta.getServiceName(), serviceMeta.getServiceVersion());
+        serviceSet.remove(key);
+        String script = "redis.call('LREM', KEYS[1], 1, ARGV[1]\n";
+        Jedis jedis = getJedis();
+        ArrayList<String> value = Lists.newArrayList(JSON.toJSONString(serviceMeta));
+        jedis.eval(script, Collections.singletonList(key), value);
+        jedis.close();
     }
 
     @Override
