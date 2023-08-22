@@ -20,6 +20,7 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import static cn.zly.rpcstudy.common.constants.FaultTolerantRules.*;
@@ -113,7 +114,7 @@ public class RpcInvokerProxy implements InvocationHandler {
                     // 快速失败
                     case FailFast:
                         log.error("快速失败");
-                        return rpcResponse.getThrowable();
+                        return !Objects.isNull(rpcResponse)? rpcResponse.getThrowable() : e;
                     // 安全失败
                     case Failsafe:
                         log.error("安全失败");
