@@ -1,0 +1,3 @@
+random=cn.zly.rpcstudy.router.RandomLoadBalancer
+roundRobin=cn.zly.rpcstudy.router.RoundLoadBalancer
+consistentHash=cn.zly.rpcstudy.router.ConsistentHashLoadBalancer
